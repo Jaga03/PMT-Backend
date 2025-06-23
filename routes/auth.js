@@ -12,9 +12,9 @@ router.post('/sessionLogin', async (req, res) => {
     const sessionCookie = await admin.auth().createSessionCookie(token, { expiresIn });
     res.cookie('session', sessionCookie, {
       maxAge: expiresIn,
-      httpOnly: true,
-      secure: true, 
-      sameSite: 'lax',
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
     });
     res.json({ message: 'Session cookie created' });
   } catch (error){
